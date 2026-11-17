@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>セミナー申込受付</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <h1>セミナー申込受付</h1>
+</header>
+<main>
+  <p id="notice" role="status" hidden></p>
+
+  <section aria-labelledby="seminars-heading">
+    <h2 id="seminars-heading">開催予定のセミナー</h2>
+    <ul id="seminars" class="cards"></ul>
+  </section>
+
+  <section aria-labelledby="apply-heading">
+    <h2 id="apply-heading">申し込む</h2>
+    <form id="apply-form">
+      <label>セミナー
+        <select name="seminarId" required></select>
+      </label>
+      <label>お名前
+        <input name="name" autocomplete="name">
+      </label>
+      <label>メールアドレス
+        <input name="email" autocomplete="email">
+      </label>
+      <button type="submit">申し込む</button>
+    </form>
+  </section>
+
+  <section aria-labelledby="registrations-heading">
+    <h2 id="registrations-heading">申込一覧</h2>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr><th>セミナー</th><th>お名前</th><th>メールアドレス</th><th>キャンセル時の返金</th><th></th></tr>
+        </thead>
+        <tbody id="registrations"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+<script src="/app.js" type="module"></script>
+</body>
+</html>
