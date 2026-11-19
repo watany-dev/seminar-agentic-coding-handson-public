@@ -1,0 +1,536 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>【ドラフト】第4部 ハンズオン（16:25〜17:40／75分） | Agentic Coding: AIエージェント時代のシステム開発入門講座</title>
+<style>
+/* 公式ページのスクリーンショット実測色を参考にした配色。 */
+:root {
+  color-scheme: light;
+  --primary: #111111;
+  --accent: #4FB8AE;
+  --gradient-start: #54B9AA;
+  --gradient-end: #FCD84F;
+  --link: #3333CC;
+  --background: #FFFFFF;
+  --text: #1F2937;
+  --surface: #F1F7F6;
+  --border: #C9DEDA;
+  --muted: #4B5563;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: 1rem; }
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans JP", "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  font-size: 16px;
+  line-height: 1.85;
+  overflow-wrap: break-word;
+}
+main { max-width: 960px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+.cover { border-top: 6px solid transparent; border-image: linear-gradient(to right, var(--gradient-start), var(--gradient-end)) 1; padding-top: 1rem; }
+h1, h2, h3, h4, h5, h6 { color: var(--primary); line-height: 1.45; }
+h1 { margin: 0.5rem 0 1rem; font-size: 2rem; }
+h2 { font-size: 1.65rem; }
+h3 { margin-top: 2rem; font-size: 1.3rem; border-bottom: 1px solid var(--border); padding-bottom: 0.3rem; }
+h4 { font-size: 1.1rem; margin-top: 1.6rem; }
+h5, h6 { font-size: 1rem; }
+a { color: var(--link); text-underline-offset: 0.2em; }
+a:focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+.course { font-size: 1.15rem; font-weight: 600; }
+.metadata, .back-to-toc { color: var(--muted); }
+.intro h2 { font-size: 1.3rem; margin-top: 2rem; }
+.draft-banner { position: sticky; top: 0; z-index: 1; margin: 0; padding: 0.5rem 1.5rem; background: #B42318; color: #FFFFFF; text-align: center; }
+.pending { margin: 1.25rem 0; padding: 0.7rem 1rem; border: 2px dashed #B42318; color: #B42318; background: #FEF3F2; }
+.step { margin-top: 3rem; padding-top: 1rem; border-top: 2px solid var(--accent); }
+li { margin: 0.25rem 0; }
+.table-scroll { overflow-x: auto; margin: 1.25rem 0; }
+table { width: 100%; border-collapse: collapse; font-size: 0.94rem; }
+th, td { border: 1px solid var(--border); padding: 0.55rem 0.7rem; text-align: left; vertical-align: top; }
+th { color: var(--primary); background: var(--surface); }
+code, pre { font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace; font-size: 0.9em; }
+code { padding: 0.15em 0.3em; background: var(--surface); border-radius: 2px; overflow-wrap: anywhere; }
+pre { padding: 1rem; background: var(--surface); border: 1px solid var(--border); white-space: pre-wrap; overflow-wrap: anywhere; tab-size: 4; line-height: 1.65; }
+pre code { padding: 0; border: 0; background: transparent; font-size: 1em; }
+blockquote { margin: 1.25rem 0; padding: 0.2rem 1rem; border-left: 3px solid var(--accent); color: var(--muted); }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+@media (max-width: 600px) {
+  main { padding: 1.25rem 1rem 2rem; }
+  h1 { font-size: 1.6rem; }
+  h2 { font-size: 1.4rem; }
+}
+@page { size: A4; margin: 16mm; }
+@media print {
+  body { font-size: 10pt; line-height: 1.65; }
+  main { max-width: none; margin: 0; padding: 0; }
+  .step { break-before: page; margin-top: 0; }
+  h1, h2, h3, h4, h5, h6 { break-after: avoid; }
+  p, li { orphans: 3; widows: 3; }
+  pre, blockquote, tr { break-inside: avoid; }
+  thead { display: table-header-group; }
+  .table-scroll { overflow: visible; }
+  table { font-size: 9pt; }
+  pre { font-size: 8pt; }
+  a { color: var(--primary); }
+  .back-to-toc { display: none; }
+}
+</style>
+</head>
+<body>
+<p class="draft-banner" role="note"><strong>ドラフト（配布不可）</strong>　未完成の箇所が9箇所あります。</p>
+<main>
+<header class="cover">
+<h1>第4部 ハンズオン（16:25〜17:40／75分）</h1>
+<p class="course">Agentic Coding: AIエージェント時代のシステム開発入門講座</p>
+<p class="metadata">講師：渡邉 洋平 ／ 開催日：2026-11-19</p>
+<p>実行環境：GitHub Codespaces／エージェント：Claude Code</p>
+</header>
+<section id="toc" class="intro">
+<h2 id="index">到達目標</h2>
+<ol>
+<li>Codespaces上でClaude Codeを起動し、教材アプリについて応答を確認できる。</li>
+<li><code>CLAUDE.md</code> とSkillsに、継続的に使う指示・検証手順を置ける。</li>
+<li>テスト・リント・型チェック・依存関係スキャンの結果を、成功・失敗・未対応に分けて説明できる。</li>
+<li>エージェントの自己申告だけで完了とせず、コマンドの結果と差分を根拠に判断できる。</li>
+</ol>
+<h2 id="index--題材">題材</h2>
+<p>セミナーの申込とキャンセルを受け付ける小さなWebアプリ「セミナー申込受付」を使います。動くアプリですが、テストの失敗や依存関係の指摘が残っています。これをClaude Codeと一緒に調べ、直し、直ったことを確かめます。</p>
+<h2 id="index--進め方と時間配分">進め方と時間配分</h2>
+<div class="table-scroll">
+<table>
+<thead>
+<tr>
+<th>ステップ</th>
+<th>時刻</th>
+<th align="right">目安</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><a href="#01-environment">Step1 環境確認</a></td>
+<td>16:25〜16:33</td>
+<td align="right">8分</td>
+<td>Codespacesで教材アプリを開き、画面とClaude Codeの応答を確認する</td>
+</tr>
+<tr>
+<td><a href="#02-claude-md">Step2 CLAUDE.md</a></td>
+<td>16:33〜16:43</td>
+<td align="right">10分</td>
+<td>検証コマンドと作業方針を <code>CLAUDE.md</code> に置く</td>
+</tr>
+<tr>
+<td><a href="#03-skills">Step2 Skills</a></td>
+<td>16:43〜16:55</td>
+<td align="right">12分</td>
+<td>品質確認の手順をSkillにして実行する</td>
+</tr>
+<tr>
+<td><a href="#04-test-lint">Step2 テスト、リント</a></td>
+<td>16:55〜17:05</td>
+<td align="right">10分</td>
+<td>実行結果を読み、画面の症状と結び付ける</td>
+</tr>
+<tr>
+<td><a href="#05-dangerous-ops">Step2 危険操作の抑止</a></td>
+<td>17:05〜17:08</td>
+<td align="right">3分</td>
+<td>講師の紹介を聞く（操作なし）</td>
+</tr>
+<tr>
+<td><a href="#06-vuln-scan">Step2 脆弱性スキャン</a></td>
+<td>17:08〜17:20</td>
+<td align="right">12分</td>
+<td>依存関係を監査し、1件を修正して再スキャンする</td>
+</tr>
+<tr>
+<td><a href="#07-quality-verification">Step3 完成済み教材での品質検証</a></td>
+<td>17:20〜17:40</td>
+<td align="right">20分</td>
+<td>失敗を直し、再検証して結果を報告する</td>
+</tr>
+</tbody></table>
+</div>
+<h2 id="index--困ったとき">困ったとき</h2>
+<p class="pending"><strong>未完成</strong>　ここに入る内容は準備中です（困ったときの連絡手段（会場／オンライン））</p>
+<p>手順どおりに進まないときは、そこで止めて知らせてください。前のステップが終わっていなくても、次のステップの説明は聞いて構いません。</p>
+</section>
+<section class="step" aria-labelledby="01-environment">
+<h2 id="01-environment">Step1 環境確認</h2>
+<p><a href="#toc" class="back-to-toc">目次に戻る</a></p>
+<h3 id="01-environment--目的">目的</h3>
+<p>Codespacesで教材アプリを開き、アプリの画面とClaude Codeの両方が動くことを確認します。</p>
+<h3 id="01-environment--所要時間の目安">所要時間の目安</h3>
+<p>8分（16:25〜16:33）：Codespaceとアプリの起動4分、Claude Codeの起動と応答確認4分。</p>
+<h3 id="01-environment--手順">手順</h3>
+<p class="pending"><strong>未完成</strong>　ここに入る内容は準備中です（WS p.23〜24、p.30）</p>
+<h4 id="01-environment--1-codespaceを開く">1. Codespaceを開く</h4>
+<p class="pending"><strong>未完成</strong>　ここに入る内容は準備中です（教材リポジトリのURL）</p>
+<ol>
+<li>教材リポジトリをGitHubで開き、<code>Code</code> → <code>Codespaces</code> → <code>Create codespace on main</code> を選びます。</li>
+<li>VS Codeの画面が開き、ターミナルが使えるようになるまで待ちます。依存関係のインストールは起動時に自動で行われます。</li>
+</ol>
+<h4 id="01-environment--2-アプリを起動して画面を見る">2. アプリを起動して画面を見る</h4>
+<p>以降の作業（コマンド実行・<code>CLAUDE.md</code>・<code>.claude/</code> の配置）は、教材リポジトリのルートで行います。作業前に <code>pwd</code> と <code>ls package.json</code> で、教材アプリの <code>package.json</code> がある場所にいるか確認してください。</p>
+<p>教材リポジトリのルートのターミナルで次を実行します。</p>
+<pre><code class="language-sh">npm ci
+npm run dev
+</code></pre>
+<p>ポート3000の画面がプレビューで開きます。開かない場合は、ターミナルの隣にある「ポート」タブから3000番を開いてください。</p>
+<p>画面には、セミナーの一覧、申込フォーム、申込一覧があります。試しに「Agentic Coding 入門講座」へ申し込み、申込一覧に載って残席が1つ減ることを確認します。</p>
+<p>このターミナルは起動したままにしておきます。ソースを変更すると、アプリは自動で再起動して初期データに戻ります。</p>
+<h4 id="01-environment--3-claude-codeを起動する">3. Claude Codeを起動する</h4>
+<p>ターミナル右上の <code>＋</code> で2つ目のターミナルを開きます。こちらも教材リポジトリのルートで <code>package.json</code> があることを確認してから、次を実行します。</p>
+<pre><code class="language-sh">curl -fsSL https://claude.ai/install.sh | bash
+claude
+</code></pre>
+<p class="pending"><strong>未完成</strong>　ここに入る内容は準備中です（Claude Codeの起動画面（当日の環境で撮り直し））</p>
+<p class="pending"><strong>未完成</strong>　ここに入る内容は準備中です（Claude Codeの認証手順）</p>
+<p>このフォルダを信頼するか聞かれたら、教材リポジトリであることを確かめて進めます。</p>
+<p>以下を選択して、モデルを<code>5.haiku</code>に設定してください</p>
+<pre><code class="language-bash">/model
+</code></pre>
+<h4 id="01-environment--4-応答を確認する">4. 応答を確認する</h4>
+<p>Claude Codeへ入力します。</p>
+<pre><code class="language-text">このリポジトリを調べて、何をするアプリか、テスト・リント・型チェックのコマンドは何かを、
+根拠にしたファイル名と一緒に教えてください。ファイルは変更しないでください。
+</code></pre>
+<p>答えを教材リポジトリのルートの <code>README.md</code> の「検証コマンド」と見比べます。以降、手順中の <code>README.md</code> はこのファイルを指します。</p>
+<p><strong>完了条件：</strong> アプリの画面が開いている。Claude Codeが検証コマンド3つ（<code>npm test</code>、<code>npm run lint</code>、<code>npm run typecheck</code>）を答えた。</p>
+</section>
+<section class="step" aria-labelledby="02-claude-md">
+<h2 id="02-claude-md">Step2 CLAUDE.md（解説＋演習）</h2>
+<p><a href="#toc" class="back-to-toc">目次に戻る</a></p>
+<h3 id="02-claude-md--目的">目的</h3>
+<p>毎回伝えたい作業方針を <code>CLAUDE.md</code> に置き、Claude Codeがそれを踏まえて動くことを確認します。</p>
+<h3 id="02-claude-md--所要時間の目安">所要時間の目安</h3>
+<p>10分（16:33〜16:43）：解説4分、演習6分。</p>
+<h3 id="02-claude-md--解説">解説</h3>
+<p>詳しい解説は当日スライドを参照してください。</p>
+<p><code>CLAUDE.md</code> は、プロジェクトの作業方針をClaude Codeに伝えるファイルです。この演習では教材リポジトリのルートに <code>CLAUDE.md</code> を置き、同じ場所でClaude Codeを起動して読み込ませます。</p>
+<p>以降の作業（コマンド実行・<code>CLAUDE.md</code>・<code>.claude/</code> の配置）はすべて教材リポジトリのルートで行います。作業前に <code>pwd</code> と <code>ls package.json</code> で、教材アプリの <code>package.json</code> がある場所にいるか確認してください。</p>
+<ul>
+<li>実在するコマンドと、確かめられる事実を書く。</li>
+<li>願望を並べるより、何で検証するか・何を報告するかを短く書く。</li>
+<li>書いた指示は方針の共有であり、守られることの保証ではない。守られたかは、後で実行結果と差分で確かめる。</li>
+</ul>
+<h3 id="02-claude-md--演習">演習</h3>
+<p class="pending"><strong>未完成</strong>　ここに入る内容は準備中です（WS p.79〜82）</p>
+<h4 id="02-claude-md--1-案を作らせる">1. 案を作らせる</h4>
+<p>Claude Codeへ入力します。</p>
+<pre><code class="language-text">現在の作業場所（教材リポジトリのルート）のREADME.mdとpackage.jsonを読んで、
+このアプリ用のCLAUDE.mdの案を見せてください。
+内容は次の4点に絞り、まだファイルは作らないでください。
+- 検証コマンド（テスト・リント・型チェック）
+- 仕様の正はREADME.mdの「仕様」であること
+- テストやリントを通すために、テストの期待値やリントの設定を書き換えないこと
+- 完了時は、変更したファイル・実行したコマンド・その結果を報告すること
+</code></pre>
+<h4 id="02-claude-md--2-確認して作成させる">2. 確認して作成させる</h4>
+<p>案のコマンドが <code>README.md</code> の「検証コマンド」と一致しているか確かめます。よければ作成させます。</p>
+<pre><code class="language-text">その内容でCLAUDE.mdを作成してください。
+</code></pre>
+<p>ファイルの作成を許可するか聞かれたら、対象が <code>CLAUDE.md</code> であることを見て許可します。できあがりは、たとえば次のようになります。</p>
+<pre><code class="language-markdown"># 作業方針
+
+## 検証コマンド
+- テスト：`npm test`
+- リント：`npm run lint`
+- 型チェック：`npm run typecheck`
+
+## ルール
+- 仕様の正は README.md の「仕様」。実装やテストと食い違うときは仕様に合わせる。
+- テストやリントを通すために、テストの期待値やリントの設定を書き換えない。
+- 完了時は、変更したファイル、実行したコマンド、その結果を報告する。
+</code></pre>
+<h4 id="02-claude-md--3-伝わったか確かめる">3. 伝わったか確かめる</h4>
+<p>エクスプローラーで <code>CLAUDE.md</code> を開いて内容を確認し、Claude Codeへ入力します。</p>
+<pre><code class="language-text">CLAUDE.mdに従うと、コードを直した後に何を実行して、何を報告しますか。
+</code></pre>
+<p><strong>完了条件：</strong> 教材リポジトリのルートに <code>CLAUDE.md</code> があり、検証コマンド3つと3つのルールが書かれている。</p>
+</section>
+<section class="step" aria-labelledby="03-skills">
+<h2 id="03-skills">Step2 Skills（解説＋演習＋実例）</h2>
+<p><a href="#toc" class="back-to-toc">目次に戻る</a></p>
+<h3 id="03-skills--目的">目的</h3>
+<p>繰り返し使う検証手順をSkillにまとめ、Claude Codeから呼び出して実行します。</p>
+<h3 id="03-skills--所要時間の目安">所要時間の目安</h3>
+<p>12分（16:43〜16:55）：解説4分、演習8分。演習が早く終わった場合は、残り時間で実例を紹介します。</p>
+<h3 id="03-skills--解説">解説</h3>
+<p>詳しい解説は当日スライドを参照してください。</p>
+<p>Skillは、名前と説明を持つ再利用可能な手順です。<code>CLAUDE.md</code> には常に守る方針を、Skillには必要なときに呼び出す手順を置きます。</p>
+<div class="table-scroll">
+<table>
+<thead>
+<tr>
+<th>用途</th>
+<th>配置パス</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>プロジェクトで共有</td>
+<td><code>.claude/skills/&lt;スキル名&gt;/SKILL.md</code></td>
+</tr>
+<tr>
+<td>個人用（複数プロジェクトで利用）</td>
+<td><code>~/.claude/skills/&lt;スキル名&gt;/SKILL.md</code></td>
+</tr>
+</tbody></table>
+</div>
+<p>このパスに置けば自動で検出され、登録の操作は要りません。Claude Codeが説明文を見て必要なときに使うほか、<code>/スキル名</code> で明示的に呼び出せます。この演習ではプロジェクト共有の配置を使います。</p>
+<h3 id="03-skills--演習">演習</h3>
+<p class="pending"><strong>未完成</strong>　ここに入る内容は準備中です（WS p.101〜103）</p>
+<h4 id="03-skills--1-skillファイルを作る">1. Skillファイルを作る</h4>
+<p>VS Codeのエクスプローラーで「新しいファイル」を選び、名前に <code>.claude/skills/quality-check/SKILL.md</code> と入力します（途中のフォルダも一緒に作られます）。次の内容を貼り付けて保存します。</p>
+<pre><code class="language-markdown">---
+name: quality-check
+description: テスト・リント・型チェックを実行し、結果を根拠付きで報告する。品質確認や検証を頼まれたときに使う。
+---
+
+# 品質確認
+
+1. `npm test`、`npm run lint`、`npm run typecheck` を順に実行する。途中で失敗しても残りを実行する。
+2. ファイルは変更しない。自動修正のオプションも使わない。
+3. 結果を次の表で報告する。
+
+   | チェック | コマンド | 終了コード | 結果（件数、失敗した箇所） |
+   | --- | --- | --- | --- |
+
+4. 失敗があれば、どこで何が失敗したかを示す。修正は指示があるまで行わない。
+</code></pre>
+<h4 id="03-skills--2-呼び出して実行する">2. 呼び出して実行する</h4>
+<p>Claude Codeで入力します。</p>
+<pre><code class="language-text">/quality-check
+</code></pre>
+<p><code>/quality-check</code> が候補に出ない場合は、パスとファイル名（<code>SKILL.md</code>）を確かめ、<code>/exit</code> でClaude Codeを終了して <code>claude</code> で起動し直します。</p>
+<p>コマンドの実行を許可するか聞かれたら、<code>npm test</code> などSkillに書いたコマンドであることを見て許可します。</p>
+<h4 id="03-skills--3-結果を確かめる">3. 結果を確かめる</h4>
+<ul>
+<li>3つのチェックがすべて実行され、表で報告されたか。</li>
+<li>VS Code左の「ソース管理」を開き、変更が <code>CLAUDE.md</code> と <code>.claude/</code> だけか。</li>
+</ul>
+<p>テストとリントは <strong>失敗します。これは想定どおりです。</strong> まだ直さず、次のステップで結果を読みます。</p>
+<p><strong>完了条件：</strong> <code>/quality-check</code> で3つのチェックが実行され、結果の表が返ってきた。</p>
+<h3 id="03-skills--実例任意">実例（任意）</h3>
+<p>時間が余った場合だけ扱います。演習が終わっていなければ、演習を優先してください。</p>
+<p>当日スライドで実例の紹介を聞いたら、「自分の業務なら何をSkillにするか」を一つ挙げてみてください。手元での操作はありません。</p>
+</section>
+<section class="step" aria-labelledby="04-test-lint">
+<h2 id="04-test-lint">Step2 テスト、リント</h2>
+<p><a href="#toc" class="back-to-toc">目次に戻る</a></p>
+<h3 id="04-test-lint--目的">目的</h3>
+<p><code>/quality-check</code> の実行結果を読み、何が成功して何が失敗したのかを根拠付きで説明できるようにします。このステップでは直しません。</p>
+<h3 id="04-test-lint--所要時間の目安">所要時間の目安</h3>
+<p>10分（16:55〜17:05）：解説2分、結果の読み取り6分、振り返り2分。</p>
+<h3 id="04-test-lint--手順">手順</h3>
+<p class="pending"><strong>未完成</strong>　ここに入る内容は準備中です（WS p.64〜66、p.68〜70、ハーネス p.40）</p>
+<h4 id="04-test-lint--1-3つのチェックの役割">1. 3つのチェックの役割</h4>
+<ul>
+<li>テスト：決めた入力・操作に対して、期待どおりに動くかを確かめる。</li>
+<li>リント：コードを動かさずに、ルール違反や問題の兆候を調べる。</li>
+<li>型チェック：型の食い違いがないかを調べる。</li>
+</ul>
+<p>どれか一つが成功しても、ほかの観点の問題は見つかりません。</p>
+<h4 id="04-test-lint--2-結果を読む">2. 結果を読む</h4>
+<p>先ほどの <code>/quality-check</code> の報告から、次の問いに答えます。</p>
+<div class="table-scroll">
+<table>
+<thead>
+<tr>
+<th>チェック</th>
+<th>読み取ること</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>テスト</td>
+<td>全部で何件あり、何件が失敗したか。失敗したテストの名前は何か</td>
+</tr>
+<tr>
+<td>リント</td>
+<td>どのファイルの、何が指摘されたか</td>
+</tr>
+<tr>
+<td>型チェック</td>
+<td>成功したか</td>
+</tr>
+</tbody></table>
+</div>
+<p>失敗したテストについて、Claude Codeに詳しく聞きます。</p>
+<pre><code class="language-text">失敗したテストについて、テスト名、期待した値、実際の値を教えてください。
+原因の調査と修正はまだしないでください。
+</code></pre>
+<p>報告が実際のログと合っているか、ターミナルの出力と見比べます。</p>
+<h4 id="04-test-lint--3-画面で症状を確かめる">3. 画面で症状を確かめる</h4>
+<p>テストの失敗が、アプリの動きとしてはどう見えるかを確かめます。Step1で開いた画面で、「少人数ワークショップ」が残席1の初期状態であることを確認してください。状態が違う場合は、開発サーバのターミナルで Ctrl+C を押して停止し、教材リポジトリのルートで <code>npm run dev</code> を実行して再起動し、画面を再読み込みします。</p>
+<p>残席1から、次を試してください。2回の申込は、初期申込者とも重複しない別々のメールアドレスで行います。</p>
+<ol>
+<li>「少人数ワークショップ」（定員3名、残り1席）に申し込む。</li>
+<li>別のメールアドレスで、もう一度同じセミナーに申し込む。</li>
+</ol>
+<p>何が起きたでしょうか。<code>README.md</code> の「仕様」の「申込」と見比べ、失敗したテストと同じ問題かどうかを考えます。</p>
+<h4 id="04-test-lint--4-成功の中身も見る">4. 「成功」の中身も見る</h4>
+<ul>
+<li>テストは失敗した1件以外は成功しています。成功した件数も結果の一部です。</li>
+<li>型チェックは成功しましたが、いま画面で見た問題は見つけていません。</li>
+</ul>
+<p><strong>完了条件：</strong> 3つのチェックそれぞれの結果を言える。失敗したテストの名前と、画面で見た症状を説明できる。</p>
+</section>
+<section class="step" aria-labelledby="05-dangerous-ops">
+<h2 id="05-dangerous-ops">Step2 危険操作の抑止（紹介）</h2>
+<p><a href="#toc" class="back-to-toc">目次に戻る</a></p>
+<h3 id="05-dangerous-ops--目的">目的</h3>
+<p>エージェントへ作業を任せる範囲と、人の承認・実行環境で守る境界を区別します。</p>
+<h3 id="05-dangerous-ops--所要時間の目安">所要時間の目安</h3>
+<p>3分（17:05〜17:08）。講師の紹介を聞くパートです。手元での操作はありません。</p>
+<h3 id="05-dangerous-ops--見るポイント">見るポイント</h3>
+<p>危険操作の抑止については、当日スライドを参照してください。</p>
+<h4 id="05-dangerous-ops--1-指示と強制力は別のもの">1. 指示と強制力は別のもの</h4>
+<p><code>CLAUDE.md</code> やSkillに「危険な操作をしない」と書くことは作業方針の共有です。それだけで操作が技術的に禁止されるわけではありません。実行権限、承認、環境の分離、復旧可能な変更管理も組み合わせます。</p>
+<h4 id="05-dangerous-ops--2-承認を求められたら確認すること">2. 承認を求められたら確認すること</h4>
+<p>講師が示す権限確認の画面を、次の観点で見てください。</p>
+<ul>
+<li>対象のパス・リポジトリ・接続先はどこか。</li>
+<li>ファイルの削除、大規模な上書き、履歴の書き換え、外部への送信を含まないか。</li>
+<li>本番環境・秘密情報にアクセスできる状態になっていないか。</li>
+<li>必要以上に広い許可や、今後の操作の一括許可になっていないか。</li>
+</ul>
+<h4 id="05-dangerous-ops--3-迷ったら止めて確認する">3. 迷ったら止めて確認する</h4>
+<p>不明な操作は承認せず、目的と必要性、より狭い操作で代替できるかをエージェントに説明させます。権限確認が煩わしくても、一括で無効化しないでください。</p>
+<p><strong>確認ポイント：</strong> 「指示を書いたから安全」ではなく、実行できる範囲と検証の仕組みも必要だと説明できること。</p>
+</section>
+<section class="step" aria-labelledby="06-vuln-scan">
+<h2 id="06-vuln-scan">Step2 脆弱性スキャン</h2>
+<p><a href="#toc" class="back-to-toc">目次に戻る</a></p>
+<h3 id="06-vuln-scan--目的">目的</h3>
+<p>依存パッケージの既知の脆弱性をスキャンし、指摘を読み、優先順位を付け、1件を修正して再スキャンするまでを体験します。</p>
+<h3 id="06-vuln-scan--所要時間の目安">所要時間の目安</h3>
+<p>12分（17:08〜17:20）：スキャン3分、結果の読み取り3分、修正4分、再スキャンと確認2分。</p>
+<h3 id="06-vuln-scan--手順">手順</h3>
+<h4 id="06-vuln-scan--1-スキャンさせる">1. スキャンさせる</h4>
+<p>Claude Codeへ入力します。</p>
+<pre><code class="language-text">npm audit を実行して、指摘をパッケージごとの表にしてください。
+列は、深刻度、実行時の依存か開発時だけの依存か、
+修正方法（npm audit fix で直るか、メジャー更新が必要か）です。
+まだ何も変更しないでください。
+</code></pre>
+<p><code>npm audit</code> の終了コードが0以外でも、脆弱性の監査レポートが取得できていれば「指摘あり」と読み取れます。終了コードだけでは判断せず、出力を確認してください。</p>
+<p>403・通信エラー・認証エラーで監査レポート自体を取得できない場合は、<strong>監査未完了</strong>です。指摘件数は不明であり、0件でも「指摘あり」でもありません。出力ログを保存して講師へ連絡し、監査結果に基づく更新・件数比較・指摘の消失確認は進めず、講師の案内を待ちます。再スキャンで取得できない場合も同じ扱いとし、消失確認は未完了と記録してください。</p>
+<h4 id="06-vuln-scan--2-結果を読む">2. 結果を読む</h4>
+<p>監査レポートを取得できた場合に、その結果を読みます。以下は配布時の例で、指摘は大きく2つの系統に分かれます。実際に取得した結果を優先し、<code>validator</code> の指摘がない場合や修正方法が異なる場合は、講師へ確認してください。</p>
+<ul>
+<li><code>validator</code></li>
+<li><code>vitest</code> とその配下（<code>vite</code>、<code>esbuild</code>、<code>tinypool</code> など）</li>
+</ul>
+<p>次の観点で、どちらを先に対応するかを考えます。</p>
+<div class="table-scroll">
+<table>
+<thead>
+<tr>
+<th>観点</th>
+<th>確認すること</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>深刻度</td>
+<td>critical／high／moderate／low。これだけで機械的には決めない</td>
+</tr>
+<tr>
+<td>利用経路</td>
+<td>アプリの実行時に使うか、開発時だけか。外部からの入力が届くか</td>
+</tr>
+<tr>
+<td>修正のしやすさ</td>
+<td>互換範囲の更新で直るか、破壊的変更を伴うメジャー更新が必要か</td>
+</tr>
+</tbody></table>
+</div>
+<p>手がかり：<code>validator</code> は申込フォームのメールアドレス検証（<code>src/rules.ts</code>）で使われています。<code>vitest</code> はテストを実行するときだけ使います。分からなければClaude Codeに「<code>validator</code> はこのアプリのどこで使われていますか」と聞いてください。</p>
+<h4 id="06-vuln-scan--3-1件だけ修正させる">3. 1件だけ修正させる</h4>
+<p>今回は、実行時に使われ、互換範囲で直せる <code>validator</code> を修正します。</p>
+<pre><code class="language-text">validator だけを、package.jsonの指定範囲内で修正版に更新してください。
+npm audit fix --force は使わず、他のパッケージは変更しないでください。
+</code></pre>
+<h4 id="06-vuln-scan--4-再スキャンして確かめる">4. 再スキャンして確かめる</h4>
+<ol>
+<li><p>VS Code左の「ソース管理」で、新たに変更されたのが <code>package-lock.json</code> だけであることを確認します。</p>
+</li>
+<li><p>再スキャンさせます。</p>
+<pre><code class="language-text">npm audit を再実行して、修正前との違いを教えてください。
+</code></pre>
+<p>件数だけでなく、<code>validator</code> の指摘が消えたことを確認します。</p>
+</li>
+<li><p>更新でアプリが壊れていないかを確かめます。</p>
+<pre><code class="language-text">/quality-check
+</code></pre>
+<p>結果が前のステップと同じ（失敗するテストとリントの指摘が同じ）なら、今回の3チェック（テスト・リント・型チェック）では新しい失敗は見つからなかったと判断します。未検証の動作は残るため、アプリ全体に問題がないという意味ではありません。</p>
+</li>
+</ol>
+<h4 id="06-vuln-scan--5-残った指摘を記録する">5. 残った指摘を記録する</h4>
+<p>配布時の例では <code>vitest</code> 系の指摘が残り、解消にはメジャー更新が必要でした。テストの書き方や設定に影響する可能性があるため、今回は見送ります。実際に取得した再スキャンの一覧から「何が残っているか」「なぜ見送ったか」を記録し、一言で言えるようにしておきます。監査未完了の場合は、残存件数や消失を推測せず「指摘件数は不明・消失確認は未完了」と記録します。</p>
+<p>指摘が0件になっても、それは「既知の脆弱性が登録されていない」という意味で、アプリ全体の安全を保証するものではありません。</p>
+<p><strong>完了条件：</strong> 監査レポートを取得でき、<code>validator</code> の指摘が再スキャンで消えている。残った指摘と、見送った理由を説明できる。監査未完了の場合は、この完了条件は未達としてログとともに講師へ報告する。</p>
+</section>
+<section class="step" aria-labelledby="07-quality-verification">
+<h2 id="07-quality-verification">Step3 完成済み教材での品質検証</h2>
+<p><a href="#toc" class="back-to-toc">目次に戻る</a></p>
+<h3 id="07-quality-verification--目的">目的</h3>
+<p>この教材アプリは、品質検証の練習用に意図的な不具合を含んでいます。「完成済み教材」は演習用に用意されたという意味で、不具合がないことを示す名称ではありません。</p>
+<p>Step2で見つけた失敗を直し、直ったことを検証し、結果を報告するまでを一巡します。人が作業をずっと見張るのではなく、計画の承認と、検証結果の確認という節目で品質を確かめます。</p>
+<h3 id="07-quality-verification--所要時間の目安">所要時間の目安</h3>
+<p>20分（17:20〜17:40）：完了条件の確認3分、原因調査と修正計画7分、修正と再検証7分、結果共有3分。</p>
+<h3 id="07-quality-verification--手順">手順</h3>
+<p class="pending"><strong>未完成</strong>　ここに入る内容は準備中です（ハーネス p.41）</p>
+<h4 id="07-quality-verification--1-現状と完了条件を確認する3分">1. 現状と完了条件を確認する（3分）</h4>
+<p>いまの状態は次のとおりです。</p>
+<ul>
+<li>テスト：1件失敗（画面では、定員を超えて申し込める）</li>
+<li>リント：1件指摘</li>
+<li>型チェック：成功</li>
+</ul>
+<p><strong>この演習の完了条件</strong></p>
+<ul>
+<li><code>/quality-check</code> の3つのチェックがすべて成功する。</li>
+<li>テストとリントの設定には手を加えていない。</li>
+<li>画面で、定員を超える申込が断られる。</li>
+</ul>
+<h4 id="07-quality-verification--2-原因を調べさせ修正計画を承認する7分">2. 原因を調べさせ、修正計画を承認する（7分）</h4>
+<pre><code class="language-text">失敗しているテストとリントの指摘について、原因を調べてください。
+仕様はREADME.mdの「仕様」を正とします。
+それぞれについて、原因、最小の修正案、変更するファイルを示し、
+まだファイルは変更しないでください。
+</code></pre>
+<p>計画を次の観点で確認します。</p>
+<ul>
+<li>変更するのは <code>src/</code> のファイルか。<code>test/</code> や <code>biome.json</code> を変えようとしていないか。</li>
+<li>失敗したテストを解消するアプリ側の修正案（テスト自体は原則変更しない）は、<code>README.md</code> の仕様（定員に達したら受け付けない）と合っているか。</li>
+<li>リントの修正案は、指摘を黙らせるだけの変更（変数名の先頭に <code>_</code> を付けるなど）になっていないか。</li>
+</ul>
+<p>納得できなければ、理由を伝えて案を出し直させます。</p>
+<h4 id="07-quality-verification--3-修正させ再検証する7分">3. 修正させ、再検証する（7分）</h4>
+<p>計画を承認し、検証まで任せます。</p>
+<pre><code class="language-text">その計画で修正し、/quality-check の手順で検証して結果を報告してください。
+</code></pre>
+<p>報告を受けたら、自分で確かめます。</p>
+<ol>
+<li>報告の表で、3つのチェックがすべて成功しているか。テストの件数は修正前と同じか。</li>
+<li>「ソース管理」で差分を開き、変更が計画どおりのファイル・行だけか。<code>test/</code> に変更がないか。</li>
+<li>画面で、「少人数ワークショップ」が残席1の初期状態であることを確認する。状態が違う場合は、開発サーバのターミナルで Ctrl+C を押して停止し、教材リポジトリのルートで <code>npm run dev</code> を実行して再起動し、画面を再読み込みする。残席1から、初期申込者とも重複しない別々のメールアドレスで2回申し込み、2回目が断られて残席が0のままか確かめる。</li>
+</ol>
+<p>ここで確認できるのは、今回の3チェックと画面操作の範囲です。成功しても、未検証の動作は残り、アプリ全体に問題がないことを保証するものではありません。</p>
+<p>3つのチェックが成功しない場合は、もう一度だけ原因を調べさせます。時間内に直らなければ、分かったところまでを次の報告に残します。</p>
+<h4 id="07-quality-verification--4-結果を報告させ共有する3分">4. 結果を報告させ、共有する（3分）</h4>
+<pre><code class="language-text">今回の作業を次の形式でまとめてください。
+- 直した問題と原因
+- 変更したファイル
+- 実行したコマンドと結果
+- まだ残っている問題、今回のチェックでは確かめられていないこと
+</code></pre>
+<p>「まだ残っている問題」に、Step2の監査で実際に確認して見送った指摘（配布時の例では <code>vitest</code> 系）が入っているかを見ます。監査レポートを取得できなかった場合は「監査未完了・指摘件数は不明・消失確認は未完了」が入っているかを確認します。入っていなければ、エージェントの報告だけでは抜けが出るという例です。</p>
+<p>最後に、確認できたことを一つ、残っていること・確かめられていないことを一つ、共有します。</p>
+<p><strong>完了条件：</strong> 3つのチェックが成功し、画面でも直ったことを確かめた。残っている問題を一つ挙げられる。</p>
+</section>
+</main>
+</body>
+</html>
