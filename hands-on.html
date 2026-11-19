@@ -170,7 +170,7 @@ hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
 <p class="pending"><strong>未完成</strong>　ここに入る内容は準備中です（教材リポジトリのURL）</p>
 <ol>
 <li>教材リポジトリをGitHubで開き、<code>Code</code> → <code>Codespaces</code> → <code>Create codespace on main</code> を選びます。</li>
-<li>VS Codeの画面が開き、ターミナルが使えるようになるまで待ちます。依存関係のインストールは起動時に自動で行われます。</li>
+<li>VS Codeの画面が開き、ターミナルが使えるようになるまで待ちます。</li>
 </ol>
 <h4 id="01-environment--2-アプリを起動して画面を見る">2. アプリを起動して画面を見る</h4>
 <p>以降の作業（コマンド実行・<code>CLAUDE.md</code>・<code>.claude/</code> の配置）は、教材リポジトリのルートで行います。作業前に <code>pwd</code> と <code>ls package.json</code> で、教材アプリの <code>package.json</code> がある場所にいるか確認してください。</p>
@@ -182,16 +182,23 @@ npm run dev
 <p>画面には、セミナーの一覧、申込フォーム、申込一覧があります。試しに「Agentic Coding 入門講座」へ申し込み、申込一覧に載って残席が1つ減ることを確認します。</p>
 <p>このターミナルは起動したままにしておきます。ソースを変更すると、アプリは自動で再起動して初期データに戻ります。</p>
 <h4 id="01-environment--3-claude-codeを起動する">3. Claude Codeを起動する</h4>
-<p>ターミナル右上の <code>＋</code> で2つ目のターミナルを開きます。こちらも教材リポジトリのルートで <code>package.json</code> があることを確認してから、次を実行します。</p>
+<p>ターミナル右上の <code>＋</code> で2つ目のターミナルを開きます。こちらも教材リポジトリのルートで <code>package.json</code> があることを確認します。</p>
+<p>まず、Claude Codeが入っているかを確かめます。</p>
+<pre><code class="language-sh">claude --version
+</code></pre>
+<p>バージョンが表示されれば、インストールは不要です。<code>command not found</code> と表示されて入っていなかったら、次を実行してインストールします。</p>
 <pre><code class="language-sh">curl -fsSL https://claude.ai/install.sh | bash
-claude
+</code></pre>
+<p>Claude Codeを起動します。</p>
+<pre><code class="language-sh">claude
 </code></pre>
 <p class="pending"><strong>未完成</strong>　ここに入る内容は準備中です（Claude Codeの起動画面（当日の環境で撮り直し））</p>
 <p class="pending"><strong>未完成</strong>　ここに入る内容は準備中です（Claude Codeの認証手順）</p>
 <p>このフォルダを信頼するか聞かれたら、教材リポジトリであることを確かめて進めます。</p>
-<p>以下を選択して、モデルを<code>5.haiku</code>に設定してください</p>
-<pre><code class="language-bash">/model
+<p>次に、使うモデルをHaikuに切り替えます。Claude Codeへ次を入力します。</p>
+<pre><code class="language-text">/model
 </code></pre>
+<p>モデルの一覧が表示されるので、<code>Haiku</code> を選んで Enter で確定します。</p>
 <h4 id="01-environment--4-応答を確認する">4. 応答を確認する</h4>
 <p>Claude Codeへ入力します。</p>
 <pre><code class="language-text">このリポジトリを調べて、何をするアプリか、テスト・リント・型チェックのコマンドは何かを、
@@ -305,7 +312,12 @@ description: テスト・リント・型チェックを実行し、結果を根�
 <pre><code class="language-text">/quality-check
 </code></pre>
 <p><code>/quality-check</code> が候補に出ない場合は、パスとファイル名（<code>SKILL.md</code>）を確かめ、<code>/exit</code> でClaude Codeを終了して <code>claude</code> で起動し直します。</p>
-<p>コマンドの実行を許可するか聞かれたら、<code>npm test</code> などSkillに書いたコマンドであることを見て許可します。</p>
+<p>コマンドの実行を許可するか聞かれたら、表示されたコマンドを読んでから許可します。</p>
+<ul>
+<li><code>npm test</code>、<code>npm run lint</code>、<code>npm run typecheck</code> のどれかであれば、Skillに書いたコマンドなので許可します。</li>
+<li>3つが <code>;</code> でつながれ、<code>echo</code> で終了コードを表示する1本のコマンドになっていることもあります。中身がこの3つと <code>echo</code> だけなら許可して構いません。</li>
+<li>それ以外のコマンドが含まれている場合は許可せず、何のために必要かをClaude Codeに聞きます。</li>
+</ul>
 <h4 id="03-skills--3-結果を確かめる">3. 結果を確かめる</h4>
 <ul>
 <li>3つのチェックがすべて実行され、表で報告されたか。</li>
@@ -516,7 +528,7 @@ npm audit fix --force は使わず、他のパッケージは変更しないで�
 <ol>
 <li>報告の表で、3つのチェックがすべて成功しているか。テストの件数は修正前と同じか。</li>
 <li>「ソース管理」で差分を開き、変更が計画どおりのファイル・行だけか。<code>test/</code> に変更がないか。</li>
-<li>画面で、「少人数ワークショップ」が残席1の初期状態であることを確認する。状態が違う場合は、開発サーバのターミナルで Ctrl+C を押して停止し、教材リポジトリのルートで <code>npm run dev</code> を実行して再起動し、画面を再読み込みする。残席1から、初期申込者とも重複しない別々のメールアドレスで2回申し込み、2回目が断られて残席が0のままか確かめる。</li>
+<li>画面を再読み込みし、「少人数ワークショップ」が残席1の初期状態であることを確認する。ソースを修正した時点でアプリは自動で再起動して初期データに戻っているので、再読み込みだけで足りる。残席1から、初期申込者とも重複しない別々のメールアドレスで2回申し込み、2回目が断られて残席が0のままか確かめる。</li>
 </ol>
 <p>ここで確認できるのは、今回の3チェックと画面操作の範囲です。成功しても、未検証の動作は残り、アプリ全体に問題がないことを保証するものではありません。</p>
 <p>3つのチェックが成功しない場合は、もう一度だけ原因を調べさせます。時間内に直らなければ、分かったところまでを次の報告に残します。</p>
